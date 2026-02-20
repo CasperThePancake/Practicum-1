@@ -1,6 +1,6 @@
 import java.util.Date;
 
-// loick was here
+// RIP my granny she got hit by a bazooka
 
 public class File {
 
