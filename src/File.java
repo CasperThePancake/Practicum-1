@@ -38,6 +38,8 @@ public class File {
         this.setSize(size);
     }
 
+    // Other methods
+
     /**
      * Set the name for a file
      *
