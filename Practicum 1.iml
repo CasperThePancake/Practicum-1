@@ -23,5 +23,6 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="AnnotationsDoclets" level="project" />
   </component>
 </module>
