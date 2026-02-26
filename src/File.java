@@ -40,7 +40,7 @@ public class File {
         this.createTime = new Date();
         this.modifyTime = new Date();
         this.writable = true;
-        this.size = 0;
+        this.setSize(0,true);
     }
 
     /**
@@ -64,10 +64,22 @@ public class File {
         this.createTime = new Date();
         this.modifyTime = new Date();
         this.setWritable(writable);
-        this.setSize(size);
+        this.setSize(size,true);
     }
 
     // Other methods
+
+    /**
+     * Set the writability of the file
+     *
+     * @param writability Boolean writability for the file
+     *
+     * @post Writability is given writability
+     *      | new.isWritable() == writability
+     */
+    public void setWritability(boolean writability) {
+        this.writable = writability;
+    }
 
     /**
      * Set the name for a file
@@ -155,6 +167,13 @@ public class File {
             this.modifyTime = new Date();
         } else {
             throw new WriteException("This file is not writable!");
+        }
+    }
+
+    // Private method to set the size while ignoring writability rules for use in constructors
+    private void setSize(int size, boolean ignoreWritability) {
+        if (ignoreWritability) {
+            this.size = size;
         }
     }
 
