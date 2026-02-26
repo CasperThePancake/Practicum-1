@@ -70,18 +70,6 @@ public class File {
     // Other methods
 
     /**
-     * Set the writability of the file
-     *
-     * @param writability Boolean writability for the file
-     *
-     * @post Writability is given writability
-     *      | new.isWritable() == writability
-     */
-    public void setWritability(boolean writability) {
-        this.writable = writability;
-    }
-
-    /**
      * Set the name for a file
      *
      * @post If given name only contains letters, numbers, dots, dashes, and underscores and is not empty, name is given name
@@ -141,7 +129,15 @@ public class File {
         }
     }
 
-    private boolean canAcceptForSize(int size) {
+    /**
+     * Returns whether the given size is a valid size
+     *
+     * @param size Size to check
+     *
+     * @return True if the size is positive and less than or equal to the maxSize
+     *      | size >= 0 && size <= maxSize
+     */
+    public boolean canAcceptForSize(int size) {
         return size >= 0 && size <= maxSize;
     }
 
@@ -159,7 +155,7 @@ public class File {
      *
      * @param size The given size of the file
      */
-    private void setSize(int size) throws WriteException { // NOMINAAL PROGRAMMEREN
+    public void setSize(int size) throws WriteException { // NOMINAAL PROGRAMMEREN
         if (this.isWritable()) {
             this.size = size;
 
@@ -177,7 +173,15 @@ public class File {
         }
     }
 
-    private void setWritable(boolean writable) { // DEFENSIEF PROGRAMMEREN
+    /**
+     * Set the writability of a file
+     *
+     * @post Writability is given writability
+     *      | new.isWritable() == writable
+     *
+     * @param writable Writability of the file
+     */
+    public void setWritable(boolean writable) { // DEFENSIEF PROGRAMMEREN
         this.writable = writable;
     }
 
@@ -214,6 +218,40 @@ public class File {
      */
     public void shorten(int amount) { // NOMINAAL PROGRAMMEREN
         this.setSize(this.size - amount);
+    }
+
+    /**
+     * Set the creation time of the file
+     *
+     * @post If given date is invalid, set createTime to new date object
+     *
+     * @post createTime is given date otherwise
+     *
+     * @param createTime Creation date for the file
+     */
+    public void setCreateTime(Date createTime) { // TOTAAL PROGRAMMEREN
+        if (createTime != null) {
+            this.createTime = createTime;
+        } else {
+            this.createTime = new Date();
+        }
+    }
+
+    /**
+     * Set the modify time of the file
+     *
+     * @post If given date is invalid, set modifyTime to new date object
+     *
+     * @post modifyTime is given date otherwise
+     *
+     * @param modifyTime Modify date for the file
+     */
+    public void setModifyTime(Date modifyTime) { // TOTAAL PROGRAMMEREN
+        if (modifyTime != null) {
+            this.modifyTime = modifyTime;
+        } else {
+            this.modifyTime = new Date();
+        }
     }
 
     /**

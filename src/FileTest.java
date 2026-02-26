@@ -2,6 +2,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Date;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class FileTest {
@@ -49,10 +51,11 @@ public class FileTest {
     @Test
     public void overlapTest1() throws InterruptedException {
         File testFile1 = new File("FirstFile");
-        Thread.sleep(50);
         File testFile2 = new File("SecondFile");
-        Thread.sleep(50);
-        testFile2.enlarge(50);
+        testFile1.setCreateTime(new Date(0));
+        testFile1.setModifyTime(new Date(0));
+        testFile2.setCreateTime(new Date(50));
+        testFile2.setModifyTime(new Date(70));
 
         assertFalse(testFile1.hasOverlappingUsePeriod(testFile2));
     }
@@ -60,12 +63,11 @@ public class FileTest {
     @Test
     public void overlapTest2() throws InterruptedException {
         File testFile1 = new File("FirstFile");
-        Thread.sleep(50);
         File testFile2 = new File("SecondFile");
-        Thread.sleep(50);
-        testFile2.enlarge(50);
-        Thread.sleep(50);
-        testFile1.setName("FirstFile-1");
+        testFile1.setCreateTime(new Date(0));
+        testFile1.setModifyTime(new Date(100));
+        testFile2.setCreateTime(new Date(50));
+        testFile2.setModifyTime(new Date(70));
 
         assertTrue(testFile1.hasOverlappingUsePeriod(testFile2));
     }
@@ -73,12 +75,11 @@ public class FileTest {
     @Test
     public void overlapTest3() throws InterruptedException {
         File testFile1 = new File("FirstFile");
-        Thread.sleep(50);
-        testFile1.enlarge(50);
-        Thread.sleep(50);
         File testFile2 = new File("SecondFile");
-        Thread.sleep(50);
-        testFile2.setName("SecondFile-1");
+        testFile1.setCreateTime(new Date(0));
+        testFile1.setModifyTime(new Date(20));
+        testFile2.setCreateTime(new Date(50));
+        testFile2.setModifyTime(new Date(70));
 
         assertFalse(testFile1.hasOverlappingUsePeriod(testFile2));
     }
@@ -86,7 +87,7 @@ public class FileTest {
     @Test
     public void setWritableTest() {
         File testFile = new File("myWritableFile");
-        testFile.setWritability(false);
+        testFile.setWritable(false);
         assertFalse(testFile.isWritable());
     }
 
