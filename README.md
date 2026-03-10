@@ -8,13 +8,15 @@ BELANGRIJK: De items (File, Directory, Link) delen nu heel veel functionaliteit,
 
 ## Superklasse (Item.java)
 - [x] Aanmaken
-- [x] Gedeelde implementatie van File, Directory en Link hier inbrengen (CTRL+C, CTRL+V)
+- [x] Gedeelde oude implementatie van File, Directory en Link hier inbrengen (CTRL+C, CTRL+V)
 - [x] File correct doen overerven van nieuwe superklasse en enkel eigen nieuwe methodes/attributen meegeven
+- [ ] Nieuwe implementaties die File, Directory en Link delen hier toevoegen!
 
 ## Bestanden (File.java)
 - [ ] File types (met Enum) ⚡⚡
 
 ## Mappen (Directory.java)
+- [x] Subklasse van Item
 - [ ] Representatie (attributen) ⚡
 - [ ] Constructoren ⚡
 - [ ] Bidirectionele associatie met bestanden ⚡⚡⚡
@@ -26,6 +28,7 @@ BELANGRIJK: De items (File, Directory, Link) delen nu heel veel functionaliteit,
 - [ ] Afhandeling van schrijfrecht ⚡⚡
 
 ## Links (Link.java)
+- [x] Subklasse van Item
 - [ ] Representatie (attributen) ⚡
 - [ ] Constructoren ⚡
 - [ ] Unidirectionele associatie met bestanden of mappen ⚡⚡⚡
