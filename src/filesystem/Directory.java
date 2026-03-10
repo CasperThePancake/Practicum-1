@@ -1,4 +1,4 @@
 package filesystem;
 
-public class Directory {
+public class Directory extends Item {
 }
