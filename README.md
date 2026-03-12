@@ -13,7 +13,7 @@ BELANGRIJK: De items (File, Directory, Link) delen nu heel veel functionaliteit,
 - [ ] Nieuwe implementaties die File, Directory en Link delen hier toevoegen!
 
 ## Bestanden (File.java)
-- [ ] File types (met Enum) ⚡⚡
+- [x] File types (met Enum) ⚡⚡
 
 ## Mappen (Directory.java)
 - [x] Subklasse van Item
