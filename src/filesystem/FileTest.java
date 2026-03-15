@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Date;
 
+import static java.lang.Thread.sleep;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -27,73 +28,75 @@ public class FileTest {
 
     @Test
     public void fileCreationTest() {
-        File testFile = new File("myEpicMovie.mp4",2048,false);
+        File testFile = new File("myEpicMovie",2048,false,FileExtension.PDF);
 
-        assertEquals("myEpicMovie.mp4",testFile.getName());
+        assertEquals("myEpicMovie",testFile.getName());
         assertEquals(2048,testFile.getSize());
+        assertEquals(FileExtension.PDF,testFile.getFileExtension());
         assertFalse(testFile.isWritable());
     }
 
     @Test
     public void illegalNameTest() {
-        File testFile = new File("Adam&Eve");
+        File testFile = new File("Adam&Eve",FileExtension.TXT);
 
         assertEquals("AdamEve",testFile.getName());
     }
 
     @Test
     public void enlargeTest() {
-        File testFile = new File("toBeEnlarged",90,true);
+        File testFile = new File("toBeEnlarged",90,true,FileExtension.PDF);
         testFile.enlarge(10);
         assertEquals(100,testFile.getSize());
     }
 
     @Test
     public void shortenTest() {
-        File testFile = new File("toBeShortened",110,true);
+        File testFile = new File("toBeShortened",110,true,FileExtension.PDF);
         testFile.shorten(10);
         assertEquals(100,testFile.getSize());
     }
 
     @Test
     public void overlapTest1() throws InterruptedException {
-        File testFile1 = new File("FirstFile");
-        File testFile2 = new File("SecondFile");
-        testFile1.setCreateTime(new Date(0));
-        testFile1.setModifyTime(new Date(0));
-        testFile2.setCreateTime(new Date(50));
-        testFile2.setModifyTime(new Date(70));
+        File testFile1 = new File("FirstFile",FileExtension.JAVA);
+        sleep(50);
+        File testFile2 = new File("SecondFile",FileExtension.JAVA);
+        sleep(50);
+        testFile2.changeSize(10);
 
         assertFalse(testFile1.hasOverlappingUsePeriod(testFile2));
     }
 
     @Test
     public void overlapTest2() throws InterruptedException {
-        File testFile1 = new File("FirstFile");
-        File testFile2 = new File("SecondFile");
-        testFile1.setCreateTime(new Date(0));
-        testFile1.setModifyTime(new Date(100));
-        testFile2.setCreateTime(new Date(50));
-        testFile2.setModifyTime(new Date(70));
+        File testFile1 = new File("FirstFile",FileExtension.JAVA);
+        sleep(50);
+        File testFile2 = new File("SecondFile",FileExtension.JAVA);
+        sleep(50);
+        testFile2.changeSize(10);
+        sleep(50);
+        testFile1.changeSize(15);
 
         assertTrue(testFile1.hasOverlappingUsePeriod(testFile2));
     }
 
     @Test
     public void overlapTest3() throws InterruptedException {
-        File testFile1 = new File("FirstFile");
-        File testFile2 = new File("SecondFile");
-        testFile1.setCreateTime(new Date(0));
-        testFile1.setModifyTime(new Date(20));
-        testFile2.setCreateTime(new Date(50));
-        testFile2.setModifyTime(new Date(70));
+        File testFile1 = new File("FirstFile",FileExtension.JAVA);
+        sleep(50);
+        testFile1.changeSize(15);
+        sleep(50);
+        File testFile2 = new File("SecondFile",FileExtension.JAVA);
+        sleep(50);
+        testFile2.changeSize(10);
 
         assertFalse(testFile1.hasOverlappingUsePeriod(testFile2));
     }
 
     @Test
     public void setWritableTest() {
-        File testFile = new File("myWritableFile");
+        File testFile = new File("myWritableFile",FileExtension.PDF);
         testFile.setWritable(false);
 
         assertFalse(testFile.isWritable());
@@ -102,16 +105,16 @@ public class FileTest {
     @Test
     public void illegalWritingTest() {
         assertThrows(WriteException.class, () -> {
-            File testFile = new File("mySafeFile",44,false);
+            File testFile = new File("mySafeFile",44,false,FileExtension.JAVA);
             testFile.enlarge(50);
         });
     }
 
     @Test
     public void testConstructorDefault() {
-        File testFile = new File("test.txt");
+        File testFile = new File("test",FileExtension.TXT);
 
-        assertEquals("test.txt",testFile.getName());
+        assertEquals("test",testFile.getName());
         assertEquals(0,testFile.getSize());
         assertTrue(testFile.isWritable());
         assertNull(testFile.getModifyTime());
