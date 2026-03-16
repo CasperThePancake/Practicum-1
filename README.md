@@ -17,7 +17,7 @@ BELANGRIJK: De items (File, Directory, Link) delen nu heel veel functionaliteit,
 ## Bestanden (File.java)
 - [x] File types (met Enum) ⚡⚡
 
-## Mappen (Directory.java)
+## Mappen (Directory.java) _CASPER_
 - [x] Subklasse van Item
 - [ ] Representatie (attributen) ⚡
 - [ ] Constructoren ⚡
