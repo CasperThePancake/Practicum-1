@@ -19,14 +19,14 @@ BELANGRIJK: De items (File, Directory, Link) delen nu heel veel functionaliteit,
 
 ## Mappen (Directory.java) _CASPER_
 - [x] Subklasse van Item
-- [ ] Representatie (attributen) ⚡
-- [ ] Constructoren ⚡
-- [ ] Bidirectionele associatie met bestanden ⚡⚡⚡
-- [ ] Methode: getNbItems() ⚡
-- [ ] Methode: getItemAt(Int positie) ⚡
-- [ ] Methode: getItem(String naam) ⚡
-- [ ] Methode: hasAsItem(File file / Folder folder / Link link) ⚡
-- [ ] Methode: makeRoot() ⚡
+- [x] Representatie (attributen) ⚡
+- [x] Constructoren ⚡
+- [x] Bidirectionele associatie met bestanden ⚡⚡⚡
+- [x] Methode: getNbItems() ⚡
+- [x] Methode: getItemAt(Int positie) ⚡
+- [x] Methode: getItem(String naam) ⚡
+- [x] Methode: hasAsItem(File file / Folder folder / Link link) ⚡
+- [x] Methode: makeRoot() ⚡
 - [ ] Afhandeling van schrijfrecht ⚡⚡
 
 ## Links (Link.java) _LOÏCK_
@@ -40,18 +40,18 @@ BELANGRIJK: De items (File, Directory, Link) delen nu heel veel functionaliteit,
 - [x] File(dir, name, size, writable, type)
 - [x] File(dir, name, type)
 - [ ] Link(dir, name, linkedItem)
-- [ ] Directory(dir, name, writable)
-- [ ] Directory(dir, name)
-- [ ] Directory(name, writable)
-- [ ] Directory(name)
+- [x] Directory(dir, name, writable)
+- [x] Directory(dir, name)
+- [x] Directory(name, writable)
+- [x] Directory(name)
 
 ## Algemeen (dingen voor in Item.java) _BEIDE_
 - [ ] Bestanden, folders en links verwijderen (als schrijfbaar en leeg) ⚡⚡
 - [x] Bijhouden van creation/modification data voor alle items ⚡
 - [x] Uitwerken van hasOverlappingUsePeriod(.) voor alle items ⚡
-- [ ] Methode: move(.) ⚡
+- [x] Methode: move(.) ⚡
 - [ ] Methode: getRoot() ⚡⚡⚡
-- [ ] Methode: isDirectOrIndirectChildOf(.) ⚡⚡
+- [x] Methode: isDirectOrIndirectChildOf(.) ⚡⚡
 - [ ] Methode: getTotalDiskUsage() ⚡
 - [ ] Methode: getAbsolutePath() ⚡⚡
 - [ ] Superveel tests maken (voor elke post-conditie, na project klaar) ⚡⚡⚡⚡⚡
