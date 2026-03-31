@@ -55,5 +55,5 @@ BELANGRIJK: De items (File, Directory, Link) delen nu heel veel functionaliteit,
 - [x] Methode: isDirectOrIndirectChildOf(.) ⚡⚡
 - [x] Methode: getTotalDiskUsage() ⚡
 - [x] Methode: getAbsolutePath() ⚡⚡
-- [ ] Default names per soort ⚡⚡
+- [x] Default names per soort ⚡⚡
 - [ ] Superveel tests maken (voor elke post-conditie, na project klaar) ⚡⚡⚡⚡⚡
