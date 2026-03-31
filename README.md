@@ -28,26 +28,26 @@ BELANGRIJK: De items (File, Directory, Link) delen nu heel veel functionaliteit,
 - [x] Methode: makeRoot() ⚡
 - [x] Methode: containsDiskItemWithName(String naam) ⚡
 - [ ] Afhandeling van schrijfrecht ⚡⚡
-- [ ] Punt uit naam halen in deze subklasse ⚡
+- [x] Punt uit naam halen in deze subklasse ⚡
 
 ## Links (Link.java) _LOÏCK_
 - [x] Subklasse van Item
-- [ ] Representatie (attributen) ⚡
-- [ ] Constructoren ⚡
-- [ ] Unidirectionele associatie met bestanden of mappen ⚡⚡⚡
-- [ ] Correcte afhandeling van verwijderde links/bestanden/mappen ⚡⚡⚡⚡
+- [x] Representatie (attributen) ⚡
+- [x] Constructoren ⚡
+- [x] Unidirectionele associatie met bestanden of mappen ⚡⚡⚡
+- [x] Correcte afhandeling van verwijderde links/bestanden/mappen ⚡⚡⚡⚡
 
 ## Lijst van nodige constructoren _BEIDE_
 - [x] File(dir, name, size, writable, type)
 - [x] File(dir, name, type)
-- [ ] Link(dir, name, linkedItem)
+- [x] Link(dir, name, linkedItem)
 - [x] Directory(dir, name, writable)
 - [x] Directory(dir, name)
 - [x] Directory(name, writable)
 - [x] Directory(name)
 
 ## Algemeen (dingen voor in Item.java) _BEIDE_
-- [ ] Bestanden, folders en links verwijderen (als schrijfbaar en leeg) ⚡⚡
+- [x] Bestanden, folders en links verwijderen (als schrijfbaar en leeg) ⚡⚡
 - [x] Bijhouden van creation/modification data voor alle items ⚡
 - [x] Uitwerken van hasOverlappingUsePeriod(.) voor alle items ⚡
 - [x] Methode: move(.) ⚡
@@ -56,4 +56,7 @@ BELANGRIJK: De items (File, Directory, Link) delen nu heel veel functionaliteit,
 - [x] Methode: getTotalDiskUsage() ⚡
 - [x] Methode: getAbsolutePath() ⚡⚡
 - [x] Default names per soort ⚡⚡
+- [ ] Deletion checks voor alle publieke methodes en methodes die andere Items als input nemen ⚡⚡⚡
 - [ ] Superveel tests maken (voor elke post-conditie, na project klaar) ⚡⚡⚡⚡⚡
+
+
