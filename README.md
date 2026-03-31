@@ -28,6 +28,7 @@ BELANGRIJK: De items (File, Directory, Link) delen nu heel veel functionaliteit,
 - [x] Methode: makeRoot() ⚡
 - [x] Methode: containsDiskItemWithName(String naam) ⚡
 - [ ] Afhandeling van schrijfrecht ⚡⚡
+- [ ] Punt uit naam halen in deze subklasse ⚡
 
 ## Links (Link.java) _LOÏCK_
 - [x] Subklasse van Item
