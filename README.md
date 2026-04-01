@@ -4,7 +4,7 @@ De soort uitwerking (totaal, nominaal, defensief) is hetzelfde als in practicum 
 BELANGRIJK: De items (File, Directory, Link) delen nu heel veel functionaliteit, namelijk bepaalde attributen en methodes (move, getRoot, isDirectOrIndirectChildOf, getTotalDiskUsage, ...)
 --> Maak een abstracte klasse Item waarvan ze overerven???
 
-- [x] Waar is Wim
+- [x] Waar is Wim (this aged like fine wine)
 
 - [x] Fouten feedback practicum 1 aanpassen ⚡⚡ (Loïck)
 
@@ -27,7 +27,7 @@ BELANGRIJK: De items (File, Directory, Link) delen nu heel veel functionaliteit,
 - [x] Methode: hasAsItem(File file / Folder folder / Link link) ⚡
 - [x] Methode: makeRoot() ⚡
 - [x] Methode: containsDiskItemWithName(String naam) ⚡
-- [ ] Afhandeling van schrijfrecht ⚡⚡
+- [x] Afhandeling van schrijfrecht ⚡⚡
 - [x] Punt uit naam halen in deze subklasse ⚡
 
 ## Links (Link.java) _LOÏCK_
@@ -56,7 +56,7 @@ BELANGRIJK: De items (File, Directory, Link) delen nu heel veel functionaliteit,
 - [x] Methode: getTotalDiskUsage() ⚡
 - [x] Methode: getAbsolutePath() ⚡⚡
 - [x] Default names per soort ⚡⚡
-- [ ] Deletion checks voor alle publieke methodes en methodes die andere Items als input nemen ⚡⚡⚡
+- [x] Deletion checks voor alle publieke methodes en methodes die andere Items als input nemen ⚡⚡⚡
 - [ ] Superveel tests maken (voor elke post-conditie, na project klaar) ⚡⚡⚡⚡⚡
 
 
