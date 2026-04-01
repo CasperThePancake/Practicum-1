@@ -1,10 +1,7 @@
-package filesystem;
-
+import filesystem.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.Date;
 
 import static java.lang.Thread.sleep;
 import static org.junit.jupiter.api.Assertions.*;
@@ -14,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
  *
  * @author Casper Vermeeren; Loïck Sansen
  */
-public class FileTest {
+public class TestSuite {
 
     @BeforeAll
     public static void BeforeAllTests() {
@@ -29,7 +26,7 @@ public class FileTest {
     @Test
     public void fileCreationTest() {
         Directory rootDir = new Directory("root");
-        File testFile = new File(rootDir,"myEpicMovie",2048,false,FileExtension.PDF);
+        File testFile = new File(rootDir,"myEpicMovie",2048,false, FileExtension.PDF);
 
         assertEquals("myEpicMovie",testFile.getName());
         assertEquals(2048,testFile.getSize());

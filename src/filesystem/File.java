@@ -4,8 +4,6 @@ import be.kuleuven.cs.som.annotate.Basic;
 import be.kuleuven.cs.som.annotate.Model;
 import be.kuleuven.cs.som.annotate.Raw;
 
-import java.util.Date;
-
 /**
  * A basic file class for OGP Practicum
  *
@@ -21,6 +19,7 @@ public class File extends Item {
     private int size = 0;
     private static final int maxSize = Integer.MAX_VALUE;
     private final FileExtension fileExtension;
+    private static final String defaultName = "New-File";
 
     // =================================================================================
     // Constructors
@@ -37,6 +36,9 @@ public class File extends Item {
      *
      * @effect Writability is set to true
      *      | setWritable(true)
+     *
+     * @effect File is moved to given directory
+     *      | move(parentDirectory)
      *
      * @param name The name for the file
      * @param fileExtension The file extension of the file
@@ -58,6 +60,10 @@ public class File extends Item {
      * @effect Writability is set to given writability
      *      | setWritable(writable)
      *
+     * @effect File is moved to given directory
+     *      | move(parentDirectory)
+     *
+     * @param parentDirectory Given directory for the file
      * @param name The name for the file
      * @param size The size for the file
      * @param writable The writability for the file
@@ -78,9 +84,16 @@ public class File extends Item {
      * Get the file extension of the file
      *
      * @return File extension of the file
+     *
+     * @throws IllegalStateException If item is terminated
+     *      | isTerminated()
      */
     @Raw @Basic
-    public FileExtension getFileExtension() {
+    public FileExtension getFileExtension() throws IllegalStateException {
+        if (isTerminated()) {
+            throw new IllegalStateException("This item has been deleted!");
+        }
+
         return fileExtension;
     }
 
@@ -129,11 +142,19 @@ public class File extends Item {
      *
      * @throws WriteException If file is not writable
      *      | !isWritable()
+     *
+     * @throws IllegalStateException If item is terminated
+     *      | isTerminated()
      */
-    public void changeSize(int size) throws IllegalStateException {
+    public void changeSize(int size) throws WriteException, IllegalStateException {
         if (!this.isWritable()) {
-            throw new IllegalStateException("File is not writable");
+            throw new WriteException("File is not writable");
         }
+
+        if (isTerminated()) {
+            throw new IllegalStateException("This item has been deleted!");
+        }
+
         this.size = size;
         this.setModifyTime();
     }
@@ -148,8 +169,15 @@ public class File extends Item {
      *      | changeSize(getSize() + amount)
      *
      * @param amount Amount to enlarge size by
+     *
+     * @throws IllegalStateException If item is terminated
+     *      | isTerminated()
      */
-    public void enlarge(int amount) {
+    public void enlarge(int amount) throws IllegalStateException {
+        if (isTerminated()) {
+            throw new IllegalStateException("This item has been deleted!");
+        }
+
         this.changeSize(this.size + amount);
     }
 
@@ -163,8 +191,15 @@ public class File extends Item {
      *      | changeSize(getSize() - amount)
      *
      * @param amount Amount to shorten size by
+     *
+     * @throws IllegalStateException If item is terminated
+     *      | isTerminated()
      */
-    public void shorten(int amount) {
+    public void shorten(int amount) throws IllegalStateException {
+        if (isTerminated()) {
+            throw new IllegalStateException("This item has been deleted!");
+        }
+
         this.changeSize(this.size - amount);
     }
 
@@ -172,9 +207,17 @@ public class File extends Item {
      * Get the size of the file
      *
      * @return Size of the file
+     *      | size
+     *
+     * @throws IllegalStateException If item is terminated
+     *      | isTerminated()
      */
     @Basic @Raw
-    public int getSize() {
+    public int getSize() throws IllegalStateException {
+        if (isTerminated()) {
+            throw new IllegalStateException("This item has been deleted!");
+        }
+
         return size;
     }
 
@@ -185,11 +228,19 @@ public class File extends Item {
     /**
      * Get the absolute file path for this file
      *
-     * @return String absolute file path for this file
-     *      | ????????
+     * @return The result is the absolute path of its
+     * parent directory followed by a forward slash and the name of this file.
+     *      | result.equals(getParentDirectory().getAbsolutePath() + "/" + getName())
+     *
+     * @throws IllegalStateException If item is terminated
+     *      | isTerminated()
      */
     @Override
-    public String getAbsolutePath() {
+    public String getAbsolutePath() throws IllegalStateException {
+        if (isTerminated()) {
+            throw new IllegalStateException("This item has been deleted!");
+        }
+
         return getParentDirectory().getAbsolutePath()+"/"+getName()+"."+getFileExtension().getSuffix();
     }
 
@@ -197,10 +248,82 @@ public class File extends Item {
      * Get the total disk usage for this file
      *
      * @return Total disk usage for this file
-     *      | bro
+     *      | this.getSize()
+     *
+     * @throws IllegalStateException If item is terminated
+     *      | isTerminated()
      */
     @Override
-    public int getTotalDiskUsage() {
+    public int getTotalDiskUsage() throws IllegalStateException {
+        if (isTerminated()) {
+            throw new IllegalStateException("This item has been deleted!");
+        }
+
         return getSize();
+    }
+
+    /**
+     * Check whether this file can be linked to
+     *
+     * @return True
+     *      | true
+     *
+     * @throws IllegalStateException If item is terminated
+     *      | isTerminated()
+     */
+    @Override
+    public boolean canBeLinkedTo() throws IllegalStateException {
+        if (isTerminated()) {
+            throw new IllegalStateException("This item has been deleted!");
+        }
+
+        return true;
+    }
+
+    /**
+     * Delete and terminate this file
+     *
+     * @throws DeleteException If file cannot be deleted and terminated
+     *      | !canBeDeleted()
+     *
+     * @post File is terminated and deleted
+     *      | isTerminated() && !getParentDirectory.hasAsItem(this)
+     */
+    @Override
+    public void delete() throws DeleteException {
+        if (canBeDeleted()) {
+            setTerminated(true);
+            getParentDirectory().removeItem(this);
+        } else {
+            throw new DeleteException("This file cannot be deleted!");
+        }
+    }
+
+    /**
+     * Check whether this file can be deleted and terminated
+     *
+     * @return True if file is writable and not yet terminated; false otherwise
+     *      | isWritable() && !isTerminated()
+     */
+    public boolean canBeDeleted() {
+        return isWritable() && !isTerminated();
+    }
+
+    /**
+     * Get the default name for this file
+     *
+     * @return Default name for this file
+     *      | File.defaultName
+     *
+     * @throws IllegalStateException If item is terminated
+     *      | isTerminated()
+     */
+    @Override
+    public String getDefaultName() throws IllegalStateException {
+        if (isTerminated()) {
+            throw new IllegalStateException("This item has been deleted!");
+        }
+
+        return defaultName;
     }
 }

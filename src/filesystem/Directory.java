@@ -13,7 +13,8 @@ public class Directory extends Item {
     // Attributes
     // =================================================================================
     private List<Item> items = new ArrayList<>();
-    static final Directory NULL_ROOT = new NullDirectory();
+    static final Directory NULL_ROOT = new NullDirectory(); // Package-private
+    private static final String defaultName = "New-Directory";
 
     // =================================================================================
     // Constructors
@@ -48,7 +49,7 @@ public class Directory extends Item {
      * @param writable The writability for the directory
      */
     public Directory(Directory parentDirectory, String name, boolean writable) {
-        super(name, writable, parentDirectory);
+        super(cleanName(name), writable, parentDirectory);
     }
 
     /**
@@ -67,7 +68,7 @@ public class Directory extends Item {
      * @param name The name for the directory
      */
     public Directory(Directory parentDirectory, String name) {
-        super(name, true, parentDirectory);
+        super(cleanName(name), true, parentDirectory);
     }
 
     /**
@@ -86,7 +87,7 @@ public class Directory extends Item {
      * @param writable The writability for the directory
      */
     public Directory(String name, boolean writable) {
-        super(name, writable, NULL_ROOT);
+        super(cleanName(name), writable, NULL_ROOT);
     }
 
     /**
@@ -104,7 +105,7 @@ public class Directory extends Item {
      * @param name The name for the directory
      */
     public Directory(String name) {
-        super(name, true, NULL_ROOT);
+        super(cleanName(name), true, NULL_ROOT);
     }
 
     // =================================================================================
@@ -119,8 +120,15 @@ public class Directory extends Item {
      *
      * @effect This directory is moved to the root level
      *      | move(null)
+     *
+     * @throws IllegalStateException If item is terminated
+     *      | isTerminated()
      */
-    public void makeRoot() {
+    public void makeRoot() throws IllegalStateException {
+        if (isTerminated()) {
+            throw new IllegalStateException("This item has been deleted!");
+        }
+
         this.move(NULL_ROOT);
     }
 
@@ -129,8 +137,15 @@ public class Directory extends Item {
      *
      * @return True if this directory is a root directory; false otherwise
      *      | getParentDirectory() == null
+     *
+     * @throws IllegalStateException If item is terminated
+     *      | isTerminated()
      */
-    public boolean isRoot() {
+    public boolean isRoot() throws IllegalStateException {
+        if (isTerminated()) {
+            throw new IllegalStateException("This item has been deleted!");
+        }
+
         return this.getParentDirectory() == null; // Remember that the getter returns null instead of NULL_ROOT to prevent user access
     }
 
@@ -151,9 +166,18 @@ public class Directory extends Item {
      *
      * @param item Item to add to this directory
      *
+     * @throws WriteException If directory is not writable
+     *      | !isWritable()
+     *
      * @note This method is package-private!
+     *
+     * @note No checks are being run for the validity of the item argument, since this method is always run from a valid item itself!
      */
-    void addItem(Item item) {
+    void addItem(Item item) throws WriteException {
+        if (!isWritable()) {
+            throw new WriteException("This directory is read-only!");
+        }
+
         // Don't just add it to the back, but insert it in the lexicographically correct place!
         int index = 0;
         while (index < getNbItems() && items.get(index).lexicographicallyBelongsBefore(item)) {
@@ -170,9 +194,18 @@ public class Directory extends Item {
      *
      * @param item Item to remove from this directory
      *
+     * @throws WriteException If directory is not writable
+     *      | !isWritable()
+     *
      * @note This method is package-private!
+     *
+     * @note No checks are being run for the validity of the item argument, since this method is always run from a valid item itself!
      */
-    void removeItem(Item item) {
+    void removeItem(Item item) throws WriteException {
+        if (!isWritable()) {
+            throw new WriteException("This directory is read-only!");
+        }
+
         items.remove(item);
     }
 
@@ -181,8 +214,15 @@ public class Directory extends Item {
      *
      * @return Number of items in this directory
      *      | items.size()
+     *
+     * @throws IllegalStateException If item is terminated
+     *      | isTerminated()
      */
-    public int getNbItems() {
+    public int getNbItems() throws IllegalStateException {
+        if (isTerminated()) {
+            throw new IllegalStateException("This item has been deleted!");
+        }
+
         return items.size();
     }
 
@@ -195,9 +235,18 @@ public class Directory extends Item {
      * @param name Name of the item to retrieve
      *
      * @return Item that has given name or null if no such item is present
-     *      | hoe de fuck moe ik dit formeel noteren bloedje
+     *      | if (exists i in items: i.getName().equalsIgnoreCase(name))
+     *      |   then (result != null && result.getName().equalsIgnoreCase(name) && items.contains(result))
+     *      | else (result == null)
+     *
+     * @throws IllegalStateException If item is terminated
+     *      | isTerminated()
      */
-    public Item getItem(String name) {
+    public Item getItem(String name) throws IllegalStateException {
+        if (isTerminated()) {
+            throw new IllegalStateException("This item has been deleted!");
+        }
+
         for (Item i : items) {
             if (i.getName().equalsIgnoreCase(name)) {
                 return i;
@@ -216,20 +265,36 @@ public class Directory extends Item {
      *
      * @return True if this directory contains an item with given name; false otherwise
      *      | getItem(name) != null
+     *
+     * @throws IllegalStateException If item is terminated
+     *      | isTerminated()
      */
-    public boolean containsDiskItemWithName(String name) {
+    public boolean containsDiskItemWithName(String name) throws IllegalStateException {
+        if (isTerminated()) {
+            throw new IllegalStateException("This item has been deleted!");
+        }
+
         return getItem(name) != null;
     }
 
     /**
      * Get the item at given ordered position in this directory
      *
-     * @param pos Position in the directory
+     * @param pos Position in the directory (starting at 1)
      *
      * @return Item at given ordered position in this directory; null if position out of bounds
-     *      | hoe hoe hoe
+     *      | if (pos >= 1 && pos <= getNbItems())
+     *      |    then (result == items.get(pos - 1))
+     *      | else (result == null)
+     *
+     * @throws IllegalStateException If item is terminated
+     *      | isTerminated()
      */
-    public Item getItemAt(int pos) {
+    public Item getItemAt(int pos) throws IllegalStateException {
+        if (isTerminated()) {
+            throw new IllegalStateException("This item has been deleted!");
+        }
+
         if (pos < 1 || pos > getNbItems()) {
             return null;
         }
@@ -246,8 +311,15 @@ public class Directory extends Item {
      *
      * @return True if this directory contains given item; false otherwise
      *      | items.contains(item)
+     *
+     * @throws IllegalStateException If item is terminated
+     *      | isTerminated()
      */
-    public boolean hasAsItem(Item item) {
+    public boolean hasAsItem(Item item) throws IllegalStateException {
+        if (isTerminated()) {
+            throw new IllegalStateException("This item has been deleted!");
+        }
+
         return items.contains(item);
     }
 
@@ -256,14 +328,33 @@ public class Directory extends Item {
     // =================================================================================
 
     /**
+     * Static method to further filter names specifically for directories
+     *
+     * @param name Given name to filter
+     *
+     * @return Filtered name
+     *      | result.equals(name.replaceAll("[.]", ""))
+     */
+    public static String cleanName(String name) {
+        return name.replaceAll("[.]", "");
+    }
+
+    /**
      * Finds the root directory this directory is directly or indirectly a child of
      *
      * @return The root directory this directory is directly or indirectly a child of
-     *      | bloedje wtf dit kan ik nu toch echt ni formeel doen
+     *      | this.isDirectOrIndirectChildOf(result) && result.isRoot()
+     *
+     * @throws IllegalStateException If item is terminated
+     *      | isTerminated()
      */
     // Overwritten version of Item's implementation, because a Directory could be a root itself and that detection happens here!
     @Override
-    public Directory getRoot() {
+    public Directory getRoot() throws IllegalStateException {
+        if (isTerminated()) {
+            throw new IllegalStateException("This item has been deleted!");
+        }
+
         if (this.isRoot()) {
             return this;
         }
@@ -275,11 +366,23 @@ public class Directory extends Item {
     /**
      * Get the absolute file path for this directory
      *
-     * @return String absolute file path for this directory
-     *      | ????????
+     * @return If this directory is a root, the result is its name preceded by a forward slash.
+     *      | if (this.isRoot())
+     *      |    then (result.equals("/" + getName()))
+     * @return If this directory is not a root, the result is the absolute path of its
+     * parent directory followed by a forward slash and the name of this directory.
+     *      | if (!this.isRoot())
+     *      |    then (result.equals(getParentDirectory().getAbsolutePath() + "/" + getName()))
+     *
+     * @throws IllegalStateException If item is terminated
+     *      | isTerminated()
      */
     @Override
-    public String getAbsolutePath() {
+    public String getAbsolutePath() throws IllegalStateException {
+        if (isTerminated()) {
+            throw new IllegalStateException("This item has been deleted!");
+        }
+
         if (isRoot()) {
             return "/"+getName();
         }
@@ -291,14 +394,85 @@ public class Directory extends Item {
      * Get the total disk usage for this directory
      *
      * @return Total disk usage for this directory
-     *      | bro
+     *      | result == sum(getTotalDiskUsage(i) for i if this.hasAsItem(i))
+     *
+     * @throws IllegalStateException If item is terminated
+     *      | isTerminated()
      */
     @Override
-    public int getTotalDiskUsage() {
+    public int getTotalDiskUsage() throws IllegalStateException {
+        if (isTerminated()) {
+            throw new IllegalStateException("This item has been deleted!");
+        }
+
         int total = 0;
         for (Item i : items) {
             total = total + i.getTotalDiskUsage();
         }
         return total;
+    }
+
+    /**
+     * Delete and terminate this directory
+     *
+     * @throws DeleteException If directory cannot be deleted
+     *      | !canBeDeleted()
+     *
+     * @post Directory is terminated
+     *      | isTerminated()
+     */
+    @Override
+    public void delete() throws DeleteException {
+        if (canBeDeleted()) {
+            setTerminated(true);
+        } else {
+            throw new DeleteException("This directory cannot be deleted!");
+        }
+    }
+
+    /**
+     * Check whether this directory can be deleted and terminated
+     *
+     * @return True if directory is writable, empty, and not yet terminated; false otherwise
+     *      | isWritable() && getNbItems() == 0 && !isTerminated()
+     */
+    public boolean canBeDeleted() {
+        return isWritable() && getNbItems() == 0 && !isTerminated();
+    }
+
+    /**
+     * Check whether this directory can be linked to
+     *
+     * @return True
+     *      | true
+     *
+     * @throws IllegalStateException If item is terminated
+     *      | isTerminated()
+     */
+    @Override
+    public boolean canBeLinkedTo() throws IllegalStateException {
+        if (isTerminated()) {
+            throw new IllegalStateException("This item has been deleted!");
+        }
+
+        return true;
+    }
+
+    /**
+     * Get the default name for this directory
+     *
+     * @return Default name for this directory
+     *      | Directory.defaultName
+     *
+     * @throws IllegalStateException If item is terminated
+     *      | isTerminated()
+     */
+    @Override
+    public String getDefaultName() throws IllegalStateException {
+        if (isTerminated()) {
+            throw new IllegalStateException("This item has been deleted!");
+        }
+
+        return defaultName;
     }
 }

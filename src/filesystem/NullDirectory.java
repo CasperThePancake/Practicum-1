@@ -5,5 +5,11 @@ class NullDirectory extends Directory {
         super(true);
     }
 
-    // Override shit here to make it true null (later, if even necessary)!
+    void addItem(Item item) {
+        // Prevent things from actually being stored
+    }
+
+    void removeItem(Item item) {
+        // Prevent things from actually being stored
+    }
 }

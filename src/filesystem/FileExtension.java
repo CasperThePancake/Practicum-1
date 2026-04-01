@@ -1,23 +1,43 @@
 package filesystem;
 
 /**
- * File extension enum
+ * A basic file extension enum for OGP Practicum
+ *
+ * @author Casper Vermeeren; Loïck Sansen
  */
 public enum FileExtension {
-    // Enum constants (extendable)
+    // =================================================================================
+    // Enum options
+    // =================================================================================
     TXT("txt"),
     PDF("pdf"),
     JAVA("java");
 
-    // Store the suffix (file extension string)
+    // =================================================================================
+    // Attributes
+    // =================================================================================
     private final String suffix;
 
-    // Constructor
+    // =================================================================================
+    // Constructors
+    // =================================================================================
+    /**
+     * Create a new FileExtension enum with given suffix
+     *
+     * @param suffix Suffix (file extension ending) for this FileExtension
+     */
     private FileExtension(String suffix) {
         this.suffix = suffix;
     }
 
-    // Getter method for suffix
+    // =================================================================================
+    // Other methods
+    // =================================================================================
+    /**
+     * Get the suffix for this file extension
+     *
+     * @return Suffix for this file extension
+     */
     public String getSuffix() {
         return suffix;
     }
