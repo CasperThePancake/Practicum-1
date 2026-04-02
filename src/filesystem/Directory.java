@@ -323,6 +323,22 @@ public class Directory extends Item {
         return items.contains(item);
     }
 
+    /**
+     * Get the index (starting at 1) of the given item in this directory
+     *
+     * @param item Given item
+     * @return Index of given item in this directory
+     * @throws IllegalArgumentException If the given item is not present in this directory
+     *      | !hasAsItem(item)
+     */
+    public int getIndexOf(Item item) throws IllegalArgumentException {
+        if (!hasAsItem(item)) {
+            throw new IllegalArgumentException("The given item is not in this directory!");
+        }
+
+        return this.items.indexOf(item)+1; // +1 for user indices starting at 1
+    }
+
     // =================================================================================
     // Other methods
     // =================================================================================

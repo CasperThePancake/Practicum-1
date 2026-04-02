@@ -385,6 +385,30 @@ public class TestSuite {
         assertEquals("New-Directory",rootDir.getName());
     }
 
+    @Test
+    public void directoryAlphabetTest() {
+        Directory rootDir = new Directory("root");
+        File file1 = new File(rootDir,"zotero",FileExtension.JAVA);
+        File file2 = new File(rootDir,"app",FileExtension.JAVA);
+        File file3 = new File(rootDir,"game",FileExtension.JAVA);
+
+        assertEquals(1,rootDir.getIndexOf(file2));
+        assertEquals(2,rootDir.getIndexOf(file3));
+        assertEquals(3,rootDir.getIndexOf(file1));
+    }
+
+    @Test
+    public void directoryGetIndexErrorTest() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            Directory rootDir = new Directory("root");
+            Directory otherDir = new Directory("otherRoot");
+            File file1 = new File(rootDir,"zotero",FileExtension.JAVA);
+            File file2 = new File(otherDir,"app",FileExtension.JAVA);
+
+            int test = rootDir.getIndexOf(file2);
+        });
+    }
+
     // =================================================================================
     // Tests: Link
     // =================================================================================
